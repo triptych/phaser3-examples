@@ -6,7 +6,7 @@ precision mediump float;
 uniform float     uTime;
 uniform vec2      uResolution;
 uniform sampler2D uMainSampler;
-uniform vec2      mouse;
+uniform vec2      uMouse;
 varying vec2 outTexCoord;
 
 float noise(vec2 pos) {
@@ -17,7 +17,7 @@ void main( void ) {
 
     //vec2 normalPos = gl_FragCoord.xy / uResolution.xy;
     vec2 normalPos = outTexCoord;
-    vec2 pointer = mouse / uResolution;
+    vec2 pointer = uMouse / uResolution;
     // FIX - Pointer inverted.
     pointer.y = (1.0-pointer.y);
     float pos = (gl_FragCoord.y / uResolution.y);
@@ -56,7 +56,7 @@ export default class ScalinePostFX extends Phaser.Renderer.WebGL.Pipelines.PostF
                 'uMainSampler',
                 'uTime',
                 'uResolution',
-                'mouse'
+                'uMouse'
             ]
         });
     }
@@ -64,10 +64,12 @@ export default class ScalinePostFX extends Phaser.Renderer.WebGL.Pipelines.PostF
     onBoot ()
     {
         this.set2f('uResolution', this.renderer.width, this.renderer.height);
+        console.log(this)
     }
 
     onPreRender ()
     {
         this.set1f('uTime', this.game.loop.time / 1000);
+        this.set2f('uMouse', this.mouseX, this.mouseY)
     }
 }

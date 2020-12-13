@@ -1,4 +1,5 @@
 // #module
+
 import ScalinePostFX from './assets/pipelines/ScalinePostFX.js';
 
 export default class Example extends Phaser.Scene
@@ -23,12 +24,17 @@ export default class Example extends Phaser.Scene
         this.add.image(400, 300, 'volcano').setAlpha(0.5);
         this.add.image(400, 300, 'hotdog').setScrollFactor(0);
 
-        const scalinePipeline = this.renderer.pipelines.get('ScalinePostFX');
+        this.cameras.main.setPostPipeline(ScalinePostFX);
 
-        this.cameras.main.setPostPipeline(scalinePipeline);
+        const shader = this.cameras.main.getPostPipeline(ScalinePostFX);
+        this.input.on('pointermove', pointer => {
+
+            shader.mouseX = pointer.x;
+            shader.mouseY = pointer.y;
+
+        });
 
         const cursors = this.input.keyboard.createCursorKeys();
-
         const controlConfig = {
             camera: this.cameras.main,
             left: cursors.left,
@@ -41,12 +47,6 @@ export default class Example extends Phaser.Scene
         };
 
         this.controls = new Phaser.Cameras.Controls.SmoothedKeyControl(controlConfig);
-
-        this.input.on('pointermove', function (pointer) {
-
-            scalinePipeline.set2f('mouse', pointer.x, pointer.y);
-
-        });
     }
 
     update (time, delta)

@@ -28,11 +28,12 @@ function preload ()
 
 function create ()
 {
+    this.add.image(0, 0, 'logo').setOrigin(0);
+
     var rt = this.add.renderTexture(0, 0, 800, 600);
 
-    var boy = this.add.spine(0, 0, 'set1.spineboy', 'idle', true).setScale(0.25);
+    var boy = this.add.spine(400, 300, 'set1.spineboy', 'idle', true).setScale(0.25);
 
-    this.add.image(0, 0, 'logo').setOrigin(0);
     this.add.text(200, 8, 'Click to stamp SpineBoy');
 
     this.input.on('pointermove', function (pointer) {
